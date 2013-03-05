@@ -1,13 +1,37 @@
-# $Id: Makefile.PL,v 1.1 1996/10/15 08:42:55 joseph Exp $
-# $Log: Makefile.PL,v $
-# Revision 1.1  1996/10/15 08:42:55  joseph
-# Initial revision
-#
-#
+use 5.008000;
+
+use strict;
+use warnings;
 use ExtUtils::MakeMaker;
-# See lib/ExtUtils/MakeMaker.pm for details of how to influence
-# the contents of the Makefile that is written.
-WriteMakefile(
-    'NAME'	=> 'File::Cmp',
-    'VERSION_FROM' => 'Cmp.pm', # finds $VERSION
+
+my %params = (
+  NAME         => 'File::Cmp',
+  ABSTRACT     => 'compare two files character by character',
+  VERSION_FROM => 'lib/File/Cmp.pm',
+  PREREQ_PM    => {
+    Carp           => 0,
+    Exporter       => 0,
+    'Scalar::Util' => 0,
+    'Test::More'   => 0,
+  },
+  ( $] >= 5.005
+    ? ( AUTHOR => 'Jeremy Mates <jmates@cpan.org>' )
+    : ()
+  ),
 );
+
+if ( $ExtUtils::MakeMaker::VERSION =~ /^\d\.\d\d$/ and $ExtUtils::MakeMaker::VERSION > 6.30 ) {
+  $params{LICENSE} = 'perl';
+}
+
+if ( $ExtUtils::MakeMaker::VERSION ge '6.46' ) {
+  $params{META_MERGE} = {
+    resources => {
+      homepage   => 'http://github.com/thrig/File-Cmp',
+      license    => 'http://dev.perl.org/licenses/',
+      repository => 'http://github.com/thrig/File-Cmp',
+    }
+  };
+}
+
+WriteMakefile(%params);
