@@ -15,7 +15,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw/&fcmp/;
 
-our $VERSION = '1.00';
+our $VERSION = '1.03';
 
 # XXX 'skip' and 'limit' might be good parameters to add, to skip X
 # initial bytes, limit work to Y bytes of data to check
@@ -76,6 +76,8 @@ sub fcmp {
     last if $eof1 and $eof2;
     if ( $eof1 xor $eof2 ) {
       ${ $param->{reason} } = 'eof' if exists $param->{reason};
+      @{ $param->{tells} } = ( tell $fhs[0], tell $fhs[1] )
+        if exists $param->{tells};
       return 0;
     }
 
@@ -120,12 +122,13 @@ Among other optional parameters.
 =head1 DESCRIPTION
 
 This module offers a B<fcmp> function that checks whether the contents
-of two files are identical. A single subroutine, B<fcmp>, is offered for
-optional export. It expects at minimum two files or file handles, along
-with various optional parameters following those filenames. Any errors
-encountered will cause an exception to be thrown; consider C<eval> or
-L<Try::Tiny> to catch these. Otherwise, the return value will be true if
-the files are identical, false if not.
+of two files are identical, in the spirit of the Unix L<cmp(1)> utility.
+A single subroutine, B<fcmp>, is offered for optional export. It expects
+at minimum two files or file handles, along with various optional
+parameters following those filenames. Any errors encountered will cause
+an exception to be thrown; consider C<eval> or L<Try::Tiny> to catch
+these. Otherwise, the return value will be true if the files are
+identical, false if not.
 
 Note that if passed a file handle, the code will read to the end of the
 handle, and will not rewind. This will require C<tell> and C<seek>
@@ -194,8 +197,8 @@ I<sizecheck> option, thus forcing inspection of the file contents.
   my @where;
   fcmp($f1, $f1, tells => \@where);
 
-Will only be set if the files differ (perhaps check I<reason> for that)
-and nothing else goes awry (EOF check, errors, etc).
+Will only be set if the files differ or EOF is encountered (perhaps
+check I<reason>) and nothing else goes awry.
 
 =back
 
@@ -208,6 +211,14 @@ Newer versions of this module may be available from CPAN. If the bug is
 in the latest version, check:
 
 L<http://github.com/thrig/File-Cmp>
+
+=head1 HISTORY
+
+As a historical note, there was an old L<File::Cmp> module from 1996-10-21
+that exported C<cmp_file>. That old interface is not replicated in this
+implementation, though would not be difficult to add, if necessary.
+
+L<http://backpan.perl.org/authors/id/J/JN/JNH/>
 
 =head1 SEE ALSO
 

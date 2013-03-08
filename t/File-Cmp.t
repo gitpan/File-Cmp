@@ -11,6 +11,7 @@ my $reason;        # for reason => callback to know what check triggered diff
 
 ok( fcmp( 'MANIFEST', 'MANIFEST' ), 'manifestly the same' );
 ok( !fcmp( 'MANIFEST', \*DATA, reason => \$reason ), 'differ' );
+is( $reason, 'size', 'reason callback' );
 
 # seek() to reset should not be necessary, as the 'fscheck' code should
 # stat this file, discover that both filehandle reference point to this
@@ -25,15 +26,23 @@ is( $reason, 'fscheck', 'reason callback' );
 ok( !fcmp( 'this', 'that', reason => \$reason ), 'extra line, sizecheck' );
 is( $reason, 'size', 'reason callback' );
 
-ok( !fcmp( 'this', 'that', sizecheck => 0, reason => \$reason ),
-  'extra line, no sizecheck' );
+my @where;
+ok(
+  !fcmp(
+    'this', 'that',
+    sizecheck => 0,
+    reason    => \$reason,
+    tells     => \@where
+  ),
+  'extra line, no sizecheck'
+);
 is( $reason, 'eof', 'reason callback' );
+is_deeply( \@where, [ 5, 5 ], 'william tells' );
 
 # 'tells' should disable the -s check, so must paw through file
 # contents. NOTE that this test will fail if MANIFEST or the top of this
 # file are fiddled with, sorry about that.
 seek DATA, 0, 0;
-my @where;
 ok(
   !fcmp(
     'MANIFEST', \*DATA,
@@ -49,7 +58,7 @@ is_deeply( \@where, [ 8, 7 ], 'william tells' );
 # XXX sparse files might be good to test, but would likely have to
 # generate such files, assuming the target system supports them, etc.
 
-plan tests => 12;
+plan tests => 14;
 
 __DATA__
 An, Android

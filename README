@@ -1,8 +1,11 @@
 File::Cmp - compare two files character by character
 
-To install this module, use CPAN, for example:
-
-  cpanm File::Cmp
+# Someone else has a lock on the File::Cmp module name in CPAN, so this
+# module may need to be renamed if that author is unresponsive or
+# unwilling to give up the module name...
+#To install this module, use CPAN, for example:
+#
+#  cpanm File::Cmp
 
 For the current release, see:
 
