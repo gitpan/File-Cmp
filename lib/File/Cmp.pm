@@ -15,7 +15,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw/&fcmp/;
 
-our $VERSION = '1.03';
+our $VERSION = '1.04';
 
 # XXX 'skip' and 'limit' might be good parameters to add, to skip X
 # initial bytes, limit work to Y bytes of data to check
@@ -137,6 +137,11 @@ if necessary. Likewise, if entire file contents are to be compared, file
 handles may need C<SEEK_SET> performed on them to move to the beginning
 prior to the B<fcmp> call. None of this is a concern if file names are
 passed instead of file handles.
+
+C<readline> calls are used on the filehandle. This means the usual "do
+not mix sys* and non-sys* calls on the same filehandle" advice applies
+for any passed filehandles. (See the C<sysread> function perldocs for
+details in L<perlfunc>.)
 
 Available parameters include:
 
