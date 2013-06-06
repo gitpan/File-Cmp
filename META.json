@@ -35,7 +35,8 @@
             "Carp" : "0",
             "Exporter" : "0",
             "Scalar::Util" : "0",
-            "Test::More" : "0"
+            "Test::More" : "0",
+            "perl" : "5.01"
          }
       }
    },
@@ -49,5 +50,5 @@
          "url" : "http://github.com/thrig/File-Cmp"
       }
    },
-   "version" : "1.04"
+   "version" : "1.05"
 }

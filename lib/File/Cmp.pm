@@ -15,7 +15,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw/&fcmp/;
 
-our $VERSION = '1.04';
+our $VERSION = '1.05';
 
 # XXX 'skip' and 'limit' might be good parameters to add, to skip X
 # initial bytes, limit work to Y bytes of data to check

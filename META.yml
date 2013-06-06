@@ -22,8 +22,9 @@ requires:
   Exporter: 0
   Scalar::Util: 0
   Test::More: 0
+  perl: 5.01
 resources:
   homepage: http://github.com/thrig/File-Cmp
   license: http://dev.perl.org/licenses/
   repository: http://github.com/thrig/File-Cmp
-version: 1.04
+version: 1.05
